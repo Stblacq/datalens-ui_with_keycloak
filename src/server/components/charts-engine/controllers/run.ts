@@ -4,7 +4,7 @@ import url from 'url';
 import type {Request, Response} from '@gravity-ui/expresskit';
 
 import type {ChartsEngine} from '..';
-import {DL_EMBED_TOKEN_HEADER, Feature, isEnabledServerFeature} from '../../../../shared';
+import {DL_EMBED_TOKEN_HEADER, Feature, isEnabledServerFeature, AuthType} from '../../../../shared';
 import {DeveloperModeCheckStatus} from '../../../../shared/types';
 import {registry} from '../../../registry';
 import Utils from '../../../utils';
@@ -88,7 +88,7 @@ export const runController = (
                 headers: {
                     ...res.locals.subrequestHeaders,
                     ...ctx.getMetadata(),
-                    ...(ctx.config.isZitadelEnabled ? {...Utils.pickZitadelHeaders(req)} : {}),
+                    ...(ctx.config.authType === AuthType.Zitadel ? {...Utils.pickZitadelHeaders(req)} : {}),
                 },
                 requestId: req.id,
                 ...extraSettings,

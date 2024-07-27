@@ -3,7 +3,7 @@ import {AuthPolicy} from '@gravity-ui/expresskit';
 import type {AppContext} from '@gravity-ui/nodekit';
 import type {PassportStatic} from 'passport';
 
-import {Feature, isEnabledServerFeature} from '../../../shared';
+import {Feature, isEnabledServerFeature,AuthType} from '../../../shared';
 import {isChartsMode, isDatalensMode, isFullMode} from '../../app-env';
 import type {ChartsEngine} from '../../components/charts-engine';
 import {getZitadelRoutes} from '../../components/zitadel/routes';
@@ -35,7 +35,7 @@ export function getRoutes({
         },
     };
 
-    if (ctx.config.isZitadelEnabled) {
+    if (ctx.config.authType === AuthType.Zitadel) {
         routes = {...routes, ...getZitadelRoutes({passport, beforeAuth, afterAuth})};
     }
 

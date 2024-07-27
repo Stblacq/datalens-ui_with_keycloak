@@ -151,7 +151,7 @@ export const AsideHeaderAdapter = ({renderContent}: AsideHeaderAdapterProps) => 
                     return getLinkWrapper(makeItem(params), SERVICE_SETTINGS_PATH);
                 },
             },
-            ...(DL.ZITADEL_ENABLED
+            ...(DL.SECURITY_ENABLED
                 ? [
                       {
                           id: 'logout',

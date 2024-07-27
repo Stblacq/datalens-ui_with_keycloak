@@ -2,6 +2,7 @@ import cluster from 'cluster';
 
 // Without this import shared object is empty in runtime and it should be exactly here
 import '../shared';
+import {AuthType} from '../shared/constants/common';
 import type {AppEnvironment} from '../shared/constants/common';
 import {getAppEndpointsConfig} from '../shared/endpoints';
 
@@ -23,7 +24,7 @@ nodekit.config.endpoints = getAppEndpointsConfig(
     appEnv as AppEnvironment.Production | AppEnvironment.Development,
 );
 
-if (nodekit.config.isZitadelEnabled) {
+if (nodekit.config.authType === AuthType.Zitadel) {
     nodekit.config.appAuthHandler = authZitadel;
 }
 

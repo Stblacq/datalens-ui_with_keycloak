@@ -16,6 +16,7 @@ import {
     SERVICE_USER_ACCESS_TOKEN_HEADER,
     SuperuserHeader,
     TENANT_ID_HEADER,
+    AuthType
 } from '../../shared';
 import {isOpensourceInstallation} from '../app-env';
 
@@ -71,7 +72,7 @@ class Utils {
             ...Utils.pickSuperuserHeaders(req.headers),
             ...Utils.pickDlContextHeaders(req.headers),
             ...Utils.pickForwardHeaders(req.headers),
-            ...(req.ctx.config.isZitadelEnabled ? {...Utils.pickZitadelHeaders(req)} : {}),
+            ...(req.ctx.config.authType === AuthType.Zitadel ? {...Utils.pickZitadelHeaders(req)} : {}),
             [REQUEST_ID_HEADER]: req.id,
         };
     }

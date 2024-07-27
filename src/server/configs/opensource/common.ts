@@ -5,6 +5,7 @@ import {
     Language,
     SERVICE_USER_ACCESS_TOKEN_HEADER,
     isTrueArg,
+    AuthType,
 } from '../../../shared';
 import {resolveSource} from '../../../shared/endpoints/sources';
 import {nativeModules} from '../../components/charts-engine/components/processor/native-modules';
@@ -203,7 +204,9 @@ export default {
     appSensitiveKeys: [SERVICE_USER_ACCESS_TOKEN_HEADER],
     appSensitiveHeaders: [SERVICE_USER_ACCESS_TOKEN_HEADER],
 
-    isZitadelEnabled: isTrueArg(process.env.ZITADEL),
+    authType: (Object.values(AuthType).includes(process.env.AUTH_TYPE as AuthType)
+        ? (process.env.AUTH_TYPE as AuthType)
+        : AuthType.None),
 
     clientId: process.env.CLIENT_ID || '',
     clientSecret: process.env.CLIENT_SECRET || '',

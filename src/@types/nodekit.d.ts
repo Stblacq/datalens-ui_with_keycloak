@@ -56,7 +56,7 @@ export interface SharedAppConfig {
     gatewayProxyHeaders: string[];
     headersMap: Record<string, string>;
 
-    isZitadelEnabled: boolean;
+    authType: string;
 
     clientId?: string;
     clientSecret?: string;

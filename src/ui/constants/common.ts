@@ -16,6 +16,7 @@ import {
     selectGradient,
     selectPaletteById,
     selectShapes,
+    AuthType,
 } from '../../shared';
 import type {Gradient, GradientPalettes} from '../../shared/constants';
 import type {ColorPalette} from '../../shared/types/color-palettes';
@@ -224,8 +225,8 @@ export const DL = {
     get HEADERS_MAP() {
         return window.DL.headersMap || {};
     },
-    get ZITADEL_ENABLED() {
-        return window.DL.isZitadelEnabled === true;
+    get SECURITY_ENABLED() {
+        return window.DL.authType !== AuthType.None;
     },
     get HIDE_NAVIGATION() {
         return window.DL.hideNavigation;

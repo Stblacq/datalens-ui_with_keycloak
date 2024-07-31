@@ -70,6 +70,13 @@ export interface SharedAppConfig {
 
     serviceClientId?: string;
     serviceClientSecret?: string;
+
+    keycloakClientId?: string;
+    keycloakSecretKey?: string;
+    keycloakUri?: string;
+    keycloakInternalUri?: string;
+    keycloakRealmName?: string;
+    keycloakCookieSecret?: string;
 }
 
 export interface SharedAppDynamicConfig {

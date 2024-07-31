@@ -1,7 +1,7 @@
 import type {Request, Response} from '@gravity-ui/expresskit';
 
 import type {ChartsEngine} from '..';
-import {EntryUpdateMode, AuthType} from '../../../../shared';
+import {AuthType, EntryUpdateMode} from '../../../../shared';
 import {DeveloperModeCheckStatus} from '../../../../shared/types';
 import Utils from '../../../utils';
 import type {ChartTemplates} from '../components/chart-generator';
@@ -93,7 +93,9 @@ function prepareChartData(
 export const getHeaders = (req: Request) => {
     const headers = {
         ...req.headers,
-        ...(req.ctx.config.authType === AuthType.Zitadel ? {...Utils.pickZitadelHeaders(req)} : {}),
+        ...(req.ctx.config.authType !== AuthType.None
+            ? {...Utils.pickAccessTokenHeaders(req)}
+            : {}),
     };
 
     return headers;

@@ -9,6 +9,7 @@ import pick from 'lodash/pick';
 
 import {
     AuthHeader,
+    AuthType,
     DL_CONTEXT_HEADER,
     FORWARDED_FOR_HEADER,
     PROJECT_ID_HEADER,
@@ -16,7 +17,6 @@ import {
     SERVICE_USER_ACCESS_TOKEN_HEADER,
     SuperuserHeader,
     TENANT_ID_HEADER,
-    AuthType
 } from '../../shared';
 import {isOpensourceInstallation} from '../app-env';
 
@@ -47,7 +47,7 @@ class Utils {
         return pick(headers, headersList);
     }
 
-    static pickZitadelHeaders(req: Request) {
+    static pickAccessTokenHeaders(req: Request) {
         return {
             authorization: 'Bearer ' + req.user?.accessToken,
             [SERVICE_USER_ACCESS_TOKEN_HEADER]: req.serviceUserAccessToken,
@@ -72,7 +72,9 @@ class Utils {
             ...Utils.pickSuperuserHeaders(req.headers),
             ...Utils.pickDlContextHeaders(req.headers),
             ...Utils.pickForwardHeaders(req.headers),
-            ...(req.ctx.config.authType === AuthType.Zitadel ? {...Utils.pickZitadelHeaders(req)} : {}),
+            ...(req.ctx.config.authType !== AuthType.None
+                ? {...Utils.pickAccessTokenHeaders(req)}
+                : {}),
             [REQUEST_ID_HEADER]: req.id,
         };
     }

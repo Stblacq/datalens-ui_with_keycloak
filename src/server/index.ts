@@ -8,6 +8,7 @@ import {getAppEndpointsConfig} from '../shared/endpoints';
 
 import {appEnv} from './app-env';
 import {getOpensourceLayoutConfig} from './components/layout/opensource-layout-config';
+import authKeycloak from './middlewares/auth-keycloak';
 import authZitadel from './middlewares/auth-zitadel';
 import {convertConnectionType} from './modes/charts/plugins/ql/utils/connection';
 import initOpensourceApp from './modes/opensource/app';
@@ -26,6 +27,8 @@ nodekit.config.endpoints = getAppEndpointsConfig(
 
 if (nodekit.config.authType === AuthType.Zitadel) {
     nodekit.config.appAuthHandler = authZitadel;
+} else if (nodekit.config.authType === AuthType.Keycloak) {
+    nodekit.config.appAuthHandler = authKeycloak;
 }
 
 const app = initOpensourceApp(nodekit);

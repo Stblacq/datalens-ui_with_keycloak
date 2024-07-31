@@ -3,9 +3,10 @@ import {AuthPolicy} from '@gravity-ui/expresskit';
 import type {AppContext} from '@gravity-ui/nodekit';
 import type {PassportStatic} from 'passport';
 
-import {Feature, isEnabledServerFeature,AuthType} from '../../../shared';
+import {AuthType, Feature, isEnabledServerFeature} from '../../../shared';
 import {isChartsMode, isDatalensMode, isFullMode} from '../../app-env';
 import type {ChartsEngine} from '../../components/charts-engine';
+import {getKeycloakRoutes} from '../../components/keycloak/routes';
 import {getZitadelRoutes} from '../../components/zitadel/routes';
 import {ping} from '../../controllers/ping';
 import type {ExtendedAppRouteDescription} from '../../types/controllers';
@@ -37,6 +38,8 @@ export function getRoutes({
 
     if (ctx.config.authType === AuthType.Zitadel) {
         routes = {...routes, ...getZitadelRoutes({passport, beforeAuth, afterAuth})};
+    } else if (ctx.config.authType === AuthType.Keycloak) {
+        routes = {...routes, ...getKeycloakRoutes({passport, beforeAuth, afterAuth})};
     }
 
     if (isFullMode || isDatalensMode) {

@@ -12,31 +12,25 @@ export function initKeycloak({
     nodekit: NodeKit;
     beforeAuth: AppMiddleware[];
 }) {
-    if (!nodekit.config.keycloakClientId) {
-        throw new Error('Missing KEYCLOAK_CLIENT_ID in env');
-    }
-    if (!nodekit.config.keycloakSecretKey) {
-        throw new Error('Missing KEYCLOAK_SECRET_KEY in env');
-    }
-    if (!nodekit.config.keycloakUri) {
-        throw new Error('Missing KEYCLOAK_URI in env');
-    }
-    if (!nodekit.config.keycloakRealmName) {
-        throw new Error('Missing KEYCLOAK_REALM_NAME in env');
-    }
-    if (!nodekit.config.keycloakCookieSecret) {
-        throw new Error('Missing KEYCLOAK_COOKIE_SECRET in env');
-    }
+    const {
+        keycloakClientId,
+        keycloakSecretKey,
+        keycloakUri,
+        keycloakRealmName,
+        keycloakCookieSecret,
+        appHostUri,
+    } = nodekit.config;
+
     passport.use(
         new OpenIDConnectStrategy(
             {
-                issuer: `${nodekit.config.keycloakUri}/realms/${nodekit.config.keycloakRealmName}`,
-                authorizationURL: `${nodekit.config.keycloakUri}/realms/${nodekit.config.keycloakRealmName}/protocol/openid-connect/auth`,
-                tokenURL: `${nodekit.config.keycloakUri}/realms/${nodekit.config.keycloakRealmName}/protocol/openid-connect/token`,
-                userInfoURL: `${nodekit.config.keycloakUri}/realms/${nodekit.config.keycloakRealmName}/protocol/openid-connect/userinfo`,
-                clientID: nodekit.config.keycloakClientId,
-                clientSecret: nodekit.config.keycloakSecretKey,
-                callbackURL: `${nodekit.config.appHostUri}/api/auth/callback`,
+                issuer: `${keycloakUri}/realms/${keycloakRealmName}`,
+                authorizationURL: `${keycloakUri}/realms/${keycloakRealmName}/protocol/openid-connect/auth`,
+                tokenURL: `${keycloakUri}/realms/${keycloakRealmName}/protocol/openid-connect/token`,
+                userInfoURL: `${keycloakUri}/realms/${keycloakRealmName}/protocol/openid-connect/userinfo`,
+                clientID: keycloakClientId,
+                clientSecret: keycloakSecretKey,
+                callbackURL: `${appHostUri}/api/auth/callback`,
                 scope: ['openid', 'profile', 'email', 'offline_access'],
                 prompt: 'login',
             },
@@ -71,7 +65,7 @@ export function initKeycloak({
     beforeAuth.push(
         cookieSession({
             name: 'keycloakCookieSecret',
-            secret: nodekit.config.keycloakCookieSecret,
+            secret: keycloakCookieSecret,
             path: '/',
             maxAge: 24 * 60 * 60 * 1000 * 365,
         }),

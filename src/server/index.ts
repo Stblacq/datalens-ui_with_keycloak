@@ -2,11 +2,13 @@ import cluster from 'cluster';
 
 // Without this import shared object is empty in runtime and it should be exactly here
 import '../shared';
+import {AuthType} from '../shared/constants/common';
 import type {AppEnvironment} from '../shared/constants/common';
 import {getAppEndpointsConfig} from '../shared/endpoints';
 
 import {appEnv} from './app-env';
 import {getOpensourceLayoutConfig} from './components/layout/opensource-layout-config';
+import authKeycloak from './middlewares/auth-keycloak';
 import authZitadel from './middlewares/auth-zitadel';
 import {convertConnectionType} from './modes/charts/plugins/ql/utils/connection';
 import initOpensourceApp from './modes/opensource/app';
@@ -23,8 +25,10 @@ nodekit.config.endpoints = getAppEndpointsConfig(
     appEnv as AppEnvironment.Production | AppEnvironment.Development,
 );
 
-if (nodekit.config.isZitadelEnabled) {
+if (nodekit.config.authType === AuthType.Zitadel) {
     nodekit.config.appAuthHandler = authZitadel;
+} else if (nodekit.config.authType === AuthType.Keycloak) {
+    nodekit.config.appAuthHandler = authKeycloak;
 }
 
 const app = initOpensourceApp(nodekit);

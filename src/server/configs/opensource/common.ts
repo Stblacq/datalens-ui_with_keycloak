@@ -1,6 +1,7 @@
 import type {AppEnvironment} from '../../../shared';
 import {
     AppInstallation,
+    AuthType,
     DL_CONTEXT_HEADER,
     Language,
     SERVICE_USER_ACCESS_TOKEN_HEADER,
@@ -203,7 +204,9 @@ export default {
     appSensitiveKeys: [SERVICE_USER_ACCESS_TOKEN_HEADER],
     appSensitiveHeaders: [SERVICE_USER_ACCESS_TOKEN_HEADER],
 
-    isZitadelEnabled: isTrueArg(process.env.ZITADEL),
+    authType: Object.values(AuthType).includes(process.env.AUTH_TYPE as AuthType)
+        ? (process.env.AUTH_TYPE as AuthType)
+        : AuthType.None,
 
     clientId: process.env.CLIENT_ID || '',
     clientSecret: process.env.CLIENT_SECRET || '',
@@ -217,6 +220,12 @@ export default {
 
     serviceClientId: process.env.SERVICE_CLIENT_ID || '',
     serviceClientSecret: process.env.SERVICE_CLIENT_SECRET || '',
+
+    keycloakClientId: process.env.KEYCLOAK_CLIENT_ID || '',
+    keycloakSecretKey: process.env.KEYCLOAK_SECRET_KEY || '',
+    keycloakUri: process.env.KEYCLOAK_URI || '',
+    keycloakRealmName: process.env.KEYCLOAK_REALM_NAME || '',
+    keycloakCookieSecret: process.env.KEYCLOAK_COOKIE_SECRET || '',
 
     runEndpoint: '/api/run',
 };

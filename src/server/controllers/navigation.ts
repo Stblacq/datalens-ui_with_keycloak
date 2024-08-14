@@ -1,6 +1,6 @@
 import type {Request, Response} from '@gravity-ui/expresskit';
 
-import {EntryScope, TENANT_ID_HEADER} from '../../shared';
+import {AuthType, EntryScope, TENANT_ID_HEADER} from '../../shared';
 import {registry} from '../registry';
 import type {DatalensGatewaySchemas} from '../types/gateway';
 import Utils from '../utils';
@@ -31,7 +31,9 @@ export default async (req: Request, res: Response): Promise<void> => {
                 headers: {
                     ...req.headers,
                     [TENANT_ID_HEADER]: currentTenantId,
-                    ...(req.ctx.config.isZitadelEnabled ? {...Utils.pickZitadelHeaders(req)} : {}),
+                    ...(req.ctx.config.authType !== AuthType.None
+                        ? {...Utils.pickAccessTokenHeaders(req)}
+                        : {}),
                 },
                 requestId: req.id,
                 authArgs: {iamToken: res.locals.iamToken},

@@ -56,7 +56,7 @@ export interface SharedAppConfig {
     gatewayProxyHeaders: string[];
     headersMap: Record<string, string>;
 
-    isZitadelEnabled: boolean;
+    authType: string;
 
     clientId?: string;
     clientSecret?: string;
@@ -70,6 +70,12 @@ export interface SharedAppConfig {
 
     serviceClientId?: string;
     serviceClientSecret?: string;
+
+    keycloakClientId?: string;
+    keycloakSecretKey?: string;
+    keycloakUri?: string;
+    keycloakRealmName?: string;
+    keycloakCookieSecret?: string;
 }
 
 export interface SharedAppDynamicConfig {

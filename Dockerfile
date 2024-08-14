@@ -43,7 +43,7 @@ RUN chown -R ${USER} /var/log/supervisor/ && \
     mkdir -p /var/cache/nginx && chown -R ${USER} /var/cache/nginx && \
     mkdir -p /var/log/nginx  && chown -R ${USER} /var/log/nginx && \
     mkdir -p /var/lib/nginx  && chown -R ${USER} /var/lib/nginx && \
-    touch /run/nginx.pid && chown -R ${USER} /run/nginx.pid 
+    touch /run/nginx.pid && chown -R ${USER} /run/nginx.pid
 
 # build app
 RUN npm ci -q --no-progress --include=dev --also=dev
@@ -51,7 +51,7 @@ RUN npm run build
 RUN npm prune --production
 RUN rm -rf assets deploy src /tmp/* /root/.npm
 
-RUN chown -R ${USER} /opt/app/dist/run 
+RUN chown -R ${USER} /opt/app/dist/run
 
 # adding certificate
 RUN echo $CERT > /usr/local/share/ca-certificates/cert.pem

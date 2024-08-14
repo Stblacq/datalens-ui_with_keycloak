@@ -20,8 +20,8 @@ export const introspect = async (ctx: AppContext, token?: string): Promise<boole
     if (!ctx.config.keycloakSecretKey) {
         throw new Error('Missing KEYCLOAK_SECRET_KEY in env');
     }
-    if (!ctx.config.keycloakInternalUri) {
-        throw new Error('Missing KEYCLOAK_INTERNAL_URI in env');
+    if (!ctx.config.keycloakUri) {
+        throw new Error('Missing KEYCLOAK_URI in env');
     }
 
     try {
@@ -33,7 +33,7 @@ export const introspect = async (ctx: AppContext, token?: string): Promise<boole
 
         const response = await axiosInstance({
             method: 'post',
-            url: `${ctx.config.keycloakInternalUri}/realms/${ctx.config.keycloakRealmName}/protocol/openid-connect/token/introspect`,
+            url: `${ctx.config.keycloakUri}/realms/${ctx.config.keycloakRealmName}/protocol/openid-connect/token/introspect`,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             data: new URLSearchParams({
                 token,
@@ -61,8 +61,8 @@ export const refreshTokens = async (ctx: AppContext, refreshToken?: string) => {
     if (!ctx.config.keycloakSecretKey) {
         throw new Error('Missing KEYCLOAK_SECRET_KEY in env');
     }
-    if (!ctx.config.keycloakInternalUri) {
-        throw new Error('Missing KEYCLOAK_INTERNAL_URI in env');
+    if (!ctx.config.keycloakUri) {
+        throw new Error('Missing KEYCLOAK_URI in env');
     }
     if (!ctx.config.keycloakRealmName) {
         throw new Error('Missing KEYCLOAK_REALM_NAME in env');
@@ -75,7 +75,7 @@ export const refreshTokens = async (ctx: AppContext, refreshToken?: string) => {
     try {
         const response = await axiosInstance({
             method: 'post',
-            url: `${ctx.config.keycloakInternalUri}/realms/${ctx.config.keycloakRealmName}/protocol/openid-connect/token`,
+            url: `${ctx.config.keycloakUri}/realms/${ctx.config.keycloakRealmName}/protocol/openid-connect/token`,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             data: new URLSearchParams({
                 client_id: ctx.config.keycloakClientId,
@@ -102,8 +102,8 @@ export const fetchServiceUserAccessToken = async (ctx: AppContext) => {
     if (!ctx.config.keycloakSecretKey) {
         throw new Error('Missing KEYCLOAK_SECRET_KEY in env');
     }
-    if (!ctx.config.keycloakInternalUri) {
-        throw new Error('Missing KEYCLOAK_INTERNAL_URI in env');
+    if (!ctx.config.keycloakUri) {
+        throw new Error('Missing KEYCLOAK_URI in env');
     }
     if (!ctx.config.keycloakRealmName) {
         throw new Error('Missing KEYCLOAK_REALM_NAME in env');
@@ -113,7 +113,7 @@ export const fetchServiceUserAccessToken = async (ctx: AppContext) => {
         ctx.log('Fetching service user access token');
         const response = await axiosInstance({
             method: 'post',
-            url: `${ctx.config.keycloakInternalUri}/realms/${ctx.config.keycloakRealmName}/protocol/openid-connect/token`,
+            url: `${ctx.config.keycloakUri}/realms/${ctx.config.keycloakRealmName}/protocol/openid-connect/token`,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             data: new URLSearchParams({
                 client_id: ctx.config.keycloakClientId,

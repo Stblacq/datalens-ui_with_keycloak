@@ -21,9 +21,6 @@ export function initKeycloak({
     if (!nodekit.config.keycloakUri) {
         throw new Error('Missing KEYCLOAK_URI in env');
     }
-    if (!nodekit.config.keycloakInternalUri) {
-        throw new Error('Missing KEYCLOAK_URI in env');
-    }
     if (!nodekit.config.keycloakRealmName) {
         throw new Error('Missing KEYCLOAK_REALM_NAME in env');
     }
@@ -33,10 +30,10 @@ export function initKeycloak({
     passport.use(
         new OpenIDConnectStrategy(
             {
-                issuer: `${nodekit.config.keycloakInternalUri}/realms/${nodekit.config.keycloakRealmName}`,
+                issuer: `${nodekit.config.keycloakUri}/realms/${nodekit.config.keycloakRealmName}`,
                 authorizationURL: `${nodekit.config.keycloakUri}/realms/${nodekit.config.keycloakRealmName}/protocol/openid-connect/auth`,
-                tokenURL: `${nodekit.config.keycloakInternalUri}/realms/${nodekit.config.keycloakRealmName}/protocol/openid-connect/token`,
-                userInfoURL: `${nodekit.config.keycloakInternalUri}/realms/${nodekit.config.keycloakRealmName}/protocol/openid-connect/userinfo`,
+                tokenURL: `${nodekit.config.keycloakUri}/realms/${nodekit.config.keycloakRealmName}/protocol/openid-connect/token`,
+                userInfoURL: `${nodekit.config.keycloakUri}/realms/${nodekit.config.keycloakRealmName}/protocol/openid-connect/userinfo`,
                 clientID: nodekit.config.keycloakClientId,
                 clientSecret: nodekit.config.keycloakSecretKey,
                 callbackURL: `${nodekit.config.appHostUri}/api/auth/callback`,
@@ -57,10 +54,8 @@ export function initKeycloak({
                 if (typeof accessToken !== 'string') {
                     throw new Error('Incorrect type of accessToken');
                 }
-
                 const {id, username} = uiProfile as any;
-
-                return done(null, {accessToken, refreshToken, userId: id, username: username});
+                return done(null, {accessToken, refreshToken, userId: id, username});
             },
         ),
     );
@@ -75,8 +70,8 @@ export function initKeycloak({
 
     beforeAuth.push(
         cookieSession({
-            name: 'zitadelCookie',
-            secret: nodekit.config.zitadelCookieSecret,
+            name: 'keycloakCookieSecret',
+            secret: nodekit.config.keycloakCookieSecret,
             path: '/',
             maxAge: 24 * 60 * 60 * 1000 * 365,
         }),

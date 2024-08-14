@@ -10,7 +10,6 @@ import {logout} from '../controllers/keycloak';
 
 export default async function (req: Request, res: Response, next: NextFunction) {
     const {ctx} = req;
-
     const isAuthenticated = req.isAuthenticated();
     if (isAuthenticated) {
         req.originalContext.set('userId', req.user.userId);

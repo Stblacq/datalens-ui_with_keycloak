@@ -74,7 +74,6 @@ export interface SharedAppConfig {
     keycloakClientId?: string;
     keycloakSecretKey?: string;
     keycloakUri?: string;
-    keycloakInternalUri?: string;
     keycloakRealmName?: string;
     keycloakCookieSecret?: string;
 }

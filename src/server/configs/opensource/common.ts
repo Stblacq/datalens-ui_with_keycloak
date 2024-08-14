@@ -224,7 +224,6 @@ export default {
     keycloakClientId: process.env.KEYCLOAK_CLIENT_ID || '',
     keycloakSecretKey: process.env.KEYCLOAK_SECRET_KEY || '',
     keycloakUri: process.env.KEYCLOAK_URI || '',
-    keycloakInternalUri: process.env.KEYCLOAK_INTERNAL_URI || '',
     keycloakRealmName: process.env.KEYCLOAK_REALM_NAME || '',
     keycloakCookieSecret: process.env.KEYCLOAK_COOKIE_SECRET || '',
 

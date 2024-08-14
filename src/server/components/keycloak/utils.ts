@@ -14,15 +14,7 @@ axiosRetry(axiosInstance, {retries: 3});
 export const introspect = async (ctx: AppContext, token?: string): Promise<boolean> => {
     ctx.log('Token introspection');
 
-    if (!ctx.config.keycloakClientId) {
-        throw new Error('Missing KEYCLOAK_CLIENT_ID in env');
-    }
-    if (!ctx.config.keycloakSecretKey) {
-        throw new Error('Missing KEYCLOAK_SECRET_KEY in env');
-    }
-    if (!ctx.config.keycloakUri) {
-        throw new Error('Missing KEYCLOAK_URI in env');
-    }
+    const {keycloakClientId, keycloakSecretKey, keycloakUri} = ctx.config;
 
     try {
         if (!token) {
@@ -33,12 +25,12 @@ export const introspect = async (ctx: AppContext, token?: string): Promise<boole
 
         const response = await axiosInstance({
             method: 'post',
-            url: `${ctx.config.keycloakUri}/realms/${ctx.config.keycloakRealmName}/protocol/openid-connect/token/introspect`,
+            url: `${keycloakUri}/realms/${keycloakRealmName}/protocol/openid-connect/token/introspect`,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             data: new URLSearchParams({
                 token,
-                client_id: ctx.config.keycloakClientId,
-                client_secret: ctx.config.keycloakSecretKey,
+                client_id: keycloakClientId,
+                client_secret: keycloakSecretKey,
             }).toString(),
         });
 
@@ -55,18 +47,7 @@ export const introspect = async (ctx: AppContext, token?: string): Promise<boole
 export const refreshTokens = async (ctx: AppContext, refreshToken?: string) => {
     ctx.log('Refreshing tokens');
 
-    if (!ctx.config.keycloakClientId) {
-        throw new Error('Missing KEYCLOAK_CLIENT_ID in env');
-    }
-    if (!ctx.config.keycloakSecretKey) {
-        throw new Error('Missing KEYCLOAK_SECRET_KEY in env');
-    }
-    if (!ctx.config.keycloakUri) {
-        throw new Error('Missing KEYCLOAK_URI in env');
-    }
-    if (!ctx.config.keycloakRealmName) {
-        throw new Error('Missing KEYCLOAK_REALM_NAME in env');
-    }
+    const {keycloakClientId, keycloakSecretKey, keycloakUri, keycloakRealmName} = ctx.config;
 
     if (!refreshToken) {
         throw new Error('Token not provided');
@@ -75,11 +56,11 @@ export const refreshTokens = async (ctx: AppContext, refreshToken?: string) => {
     try {
         const response = await axiosInstance({
             method: 'post',
-            url: `${ctx.config.keycloakUri}/realms/${ctx.config.keycloakRealmName}/protocol/openid-connect/token`,
+            url: `${keycloakUri}/realms/${keycloakRealmName}/protocol/openid-connect/token`,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             data: new URLSearchParams({
-                client_id: ctx.config.keycloakClientId,
-                client_secret: ctx.config.keycloakSecretKey,
+                client_id: keycloakClientId,
+                client_secret: keycloakSecretKey,
                 grant_type: 'refresh_token',
                 scope: 'openid profile email',
                 refresh_token: refreshToken,
@@ -96,28 +77,17 @@ export const refreshTokens = async (ctx: AppContext, refreshToken?: string) => {
 };
 
 export const fetchServiceUserAccessToken = async (ctx: AppContext) => {
-    if (!ctx.config.keycloakClientId) {
-        throw new Error('Missing KEYCLOAK_CLIENT_ID in env');
-    }
-    if (!ctx.config.keycloakSecretKey) {
-        throw new Error('Missing KEYCLOAK_SECRET_KEY in env');
-    }
-    if (!ctx.config.keycloakUri) {
-        throw new Error('Missing KEYCLOAK_URI in env');
-    }
-    if (!ctx.config.keycloakRealmName) {
-        throw new Error('Missing KEYCLOAK_REALM_NAME in env');
-    }
+    const {keycloakClientId, keycloakSecretKey, keycloakUri, keycloakRealmName} = ctx.config;
 
     try {
         ctx.log('Fetching service user access token');
         const response = await axiosInstance({
             method: 'post',
-            url: `${ctx.config.keycloakUri}/realms/${ctx.config.keycloakRealmName}/protocol/openid-connect/token`,
+            url: `${keycloakUri}/realms/${keycloakRealmName}/protocol/openid-connect/token`,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             data: new URLSearchParams({
-                client_id: ctx.config.keycloakClientId,
-                client_secret: ctx.config.keycloakSecretKey,
+                client_id: keycloakClientId,
+                client_secret: keycloakSecretKey,
                 grant_type: 'client_credentials',
                 scope: 'openid profile email',
             }).toString(),

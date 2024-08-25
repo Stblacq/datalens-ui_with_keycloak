@@ -14,7 +14,7 @@ axiosRetry(axiosInstance, {retries: 3});
 export const introspect = async (ctx: AppContext, token?: string): Promise<boolean> => {
     ctx.log('Token introspection');
 
-    const {keycloakClientId, keycloakSecretKey, keycloakUri} = ctx.config;
+    const {keycloakClientId, keycloakSecretKey, keycloakUri, keycloakRealmName} = ctx.config;
 
     try {
         if (!token) {
@@ -29,8 +29,8 @@ export const introspect = async (ctx: AppContext, token?: string): Promise<boole
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             data: new URLSearchParams({
                 token,
-                client_id: keycloakClientId,
-                client_secret: keycloakSecretKey,
+                client_id: `${keycloakClientId}`,
+                client_secret: `${keycloakSecretKey}`,
             }).toString(),
         });
 
@@ -47,7 +47,7 @@ export const introspect = async (ctx: AppContext, token?: string): Promise<boole
 export const refreshTokens = async (ctx: AppContext, refreshToken?: string) => {
     ctx.log('Refreshing tokens');
 
-    const {keycloakClientId, keycloakSecretKey, keycloakUri, keycloakRealmName} = ctx.config;
+    const {keycloakClientId, keycloakUri, keycloakRealmName} = ctx.config;
 
     if (!refreshToken) {
         throw new Error('Token not provided');
@@ -59,8 +59,8 @@ export const refreshTokens = async (ctx: AppContext, refreshToken?: string) => {
             url: `${keycloakUri}/realms/${keycloakRealmName}/protocol/openid-connect/token`,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             data: new URLSearchParams({
-                client_id: keycloakClientId,
-                client_secret: keycloakSecretKey,
+                client_id: `${keycloakClientId}`,
+                client_secret: `keycloakSecretKey`,
                 grant_type: 'refresh_token',
                 scope: 'openid profile email',
                 refresh_token: refreshToken,
@@ -86,8 +86,8 @@ export const fetchServiceUserAccessToken = async (ctx: AppContext) => {
             url: `${keycloakUri}/realms/${keycloakRealmName}/protocol/openid-connect/token`,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             data: new URLSearchParams({
-                client_id: keycloakClientId,
-                client_secret: keycloakSecretKey,
+                client_id: `${keycloakClientId}`,
+                client_secret: `${keycloakSecretKey}`,
                 grant_type: 'client_credentials',
                 scope: 'openid profile email',
             }).toString(),

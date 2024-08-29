@@ -58,3 +58,10 @@ Password:
 ```
 demo
 ```
+
+
+## Keycloak Support
+
+This fork introduces support for Keycloak, allowing you to leverage Keycloak for authentication and authorization within the application.
+
+Refer to [Datalens With Keycloak](https://github.com/Stblacq/datalens_with_keycloak?tab=readme-ov-file#keycloak-support) for documentation on this.

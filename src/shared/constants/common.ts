@@ -29,9 +29,9 @@ export enum DeviceType {
     Desktop = 'desktop',
 }
 export enum AuthType {
-    Zitadel = 'zitadel',
-    Keycloak = 'keycloak',
-    None = 'none',
+    Zitadel = 'ZITADEL',
+    Keycloak = 'KEYCLOAK',
+    None = 'NONE',
 }
 export const DEFAULT_PAGE_SIZE = 1000;
 
